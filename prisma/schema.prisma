@@ -28,9 +28,9 @@ model Administrators {
 }
 
 model Pacients {
-  id                   String         @id @default(cuid())
+  id                   String          @id @default(cuid())
   full_name            String
-  email                String         @unique
+  email                String          @unique
   document_type        DocumentType
   document_number      String
   date_birth           String
@@ -38,13 +38,13 @@ model Pacients {
   profile_picture_url  String
   document_picture_url String
   password             String
-  created_at           DateTime       @default(now())
-  administrator        Administrators @relation(fields: [administratorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  created_at           DateTime        @default(now())
+  administrator        Administrators? @relation(fields: [administratorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   administratorId      String
 }
 
 model MedicalConsultations {
-  id               String         @id @default(cuid())
+  id               String          @id @default(cuid())
   doctor_name      String
   doctor_id        String
   pacient_name     String
@@ -52,10 +52,18 @@ model MedicalConsultations {
   number_Chart     String
   exams_list       String[]
   attachments_url  String[]
-  administrator    Administrators @relation(fields: [administratorsId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  administrator    Administrators? @relation(fields: [administratorsId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   administratorsId String
-  created_at       DateTime       @default(now())
-  udpated_at       DateTime       @default(now()) @updatedAt
+  created_at       DateTime        @default(now())
+  udpated_at       DateTime        @default(now()) @updatedAt
+}
+
+model AccessToken {
+  id         String   @id @default(cuid())
+  user_id    String
+  token      String   @unique
+  expiration DateTime
+  created_at DateTime @default(now())
 }
 
 enum DocumentType {
