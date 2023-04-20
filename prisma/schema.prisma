@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Administrators {
+  id                   String                 @id @default(cuid())
+  full_name            String
+  email                String                 @unique
+  position             AdmPosition
+  document_type        DocumentType
+  document_number      String
+  date_birth           String
+  address              String
+  profile_picture_url  String
+  document_picture_url String
+  password             String
+  created_at           DateTime               @default(now())
+  Pacients             Pacients[]
+  MedicalConsultations MedicalConsultations[]
+}
+
+model Pacients {
+  id                   String         @id @default(cuid())
+  full_name            String
+  email                String         @unique
+  document_type        DocumentType
+  document_number      String
+  date_birth           String
+  address              String
+  profile_picture_url  String
+  document_picture_url String
+  password             String
+  created_at           DateTime       @default(now())
+  administrator        Administrators @relation(fields: [administratorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  administratorId      String
+}
+
+model MedicalConsultations {
+  id               String         @id @default(cuid())
+  doctor_name      String
+  doctor_id        String
+  pacient_name     String
+  pacient_id       String
+  number_Chart     String
+  exams_list       String[]
+  attachments_url  String[]
+  administrator    Administrators @relation(fields: [administratorsId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  administratorsId String
+  created_at       DateTime       @default(now())
+  udpated_at       DateTime       @default(now()) @updatedAt
+}
+
+enum DocumentType {
+  RG
+  CPF
+}
+
+enum AdmPosition {
+  DOCTOR
+  SECRETARY
+}
