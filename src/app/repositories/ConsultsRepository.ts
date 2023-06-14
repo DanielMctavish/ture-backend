@@ -5,4 +5,5 @@ export default interface ConsultRepository {
     update(consult_id: string, data: MedicalConsult): Promise<MedicalConsult>
     getOne(consult_id: string): Promise<MedicalConsult | null>
     getAll(administrator_id: string): Promise<MedicalConsult[]>
+    deleteOne(consult_id: string): Promise<MedicalConsult | null>
 }

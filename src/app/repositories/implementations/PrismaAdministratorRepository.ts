@@ -19,11 +19,14 @@ export class PrismaAdministratorRepository implements AdministratorRepository {
         })
     }
     async getOne(id: string): Promise<IAdministrator | null> {
-        if(!id) return null
+        if (!id) return null
         return await prisma.administrators.findFirst({
             where: {
                 id
             }
         })
+    }
+    async getAll(): Promise<IAdministrator[]> {
+        return await prisma.administrators.findMany()
     }
 }
